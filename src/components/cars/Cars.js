@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import CarCard from './CarCard';
 import '../../styles/Carousel.css';
+import { fetchCars } from '../../redux/Cars/carSlice';
 
 const Cars = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const state = useSelector((state) => state);
   const { cars } = state.cars;
@@ -14,13 +16,15 @@ const Cars = () => {
   // const threeCars = cars.slice(0, 3);
 
   useEffect(() => {
+    dispatch(fetchCars());
+
     if (user.status === 'not-logged-in') {
       navigate('/login');
     }
     if (user.error === 'Unauthorized') {
       navigate('/login');
     }
-  }, [user.status, user.error, navigate]);
+  }, [user.status, user.error, navigate, dispatch]);
 
   return (
     <div className="main-car-container">

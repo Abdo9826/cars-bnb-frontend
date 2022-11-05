@@ -3,7 +3,6 @@ import { BrowserRouter } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import store from './redux/store';
-import { fetchCars } from './redux/Cars/carSlice';
 import { fetchReservations } from './redux/Reservations/ReserveSlice';
 import { getUser } from './redux/Auth/authenticationSlice';
 
@@ -17,7 +16,6 @@ import reportWebVitals from './reportWebVitals';
 const container = document.getElementById('root');
 const root = createRoot(container);
 
-store.dispatch(fetchCars());
 store.dispatch(fetchReservations());
 store.dispatch(getUser());
 

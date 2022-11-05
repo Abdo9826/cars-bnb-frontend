@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteReserve } from '../../redux/Reservations/ReserveSlice';
+import { deleteReserve, fetchReservations } from '../../redux/Reservations/ReserveSlice';
 
 function Reservations() {
   const dispatch = useDispatch();
-  const reservations = useSelector((state) => state.reservations.reservations);
+  const reservations = useSelector((state) => state.reservations.reservations) || [];
   const cars = useSelector((state) => state.cars.cars);
+
+  useEffect(() => {
+    dispatch(fetchReservations());
+  }, [dispatch]);
 
   return (
     <div className="container">
@@ -19,33 +23,32 @@ function Reservations() {
               </div>
             )}
             {reservations.map((reservation) => (
-              <div className="col-md-4" key={reservation.id}>
+              <div className="col-md-4" key={reservation?.id}>
                 <div className="card mb-4">
                   <div className="card-body">
                     <img
                       src={
-                        cars.find((car) => car.id === reservation.car_id).featured_image
+                        cars.find((car) => car.id === reservation.car_id)?.featured_image
                       }
                       alt="car"
                       className="img-fluid"
                     />
-                    {reservation.car_id ? (
+                    {reservation?.car_id ? (
                       <h5 className="card-title">
                         {
-                          cars.find((car) => car.id === reservation.car_id)
-                            .model
+                          cars.find((car) => car.id === reservation.car_id)?.model
                         }
                       </h5>
                     ) : (
                       <h5 className="card-title">Car not found</h5>
                     )}
 
-                    <p className="card-text">{reservation.city}</p>
-                    <p className="card-text">{reservation.reservation_date}</p>
+                    <p className="card-text">{reservation?.city}</p>
+                    <p className="card-text">{reservation?.reservation_date}</p>
 
                     <button
                       type="button"
-                      onClick={() => dispatch(deleteReserve(reservation.id))}
+                      onClick={() => dispatch(deleteReserve(reservation?.id))}
                       className="btn btn-danger"
                     >
                       Remove
